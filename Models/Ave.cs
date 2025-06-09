@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Final.Models
 {
-    public class Ave
+    public class Ave:Animal
     {
         [Required]
         public string TipoPico { get; set; }

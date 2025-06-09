@@ -3,7 +3,7 @@
 
 @using Models
 
-@if (animales == null)
+@if (aves == null)
 {
 	<p><em>Cargando...</em></p>
 }
@@ -13,31 +13,37 @@ else
 		<thead>
 			<tr>
 				<th>Nombre</th>
-				<th>Especie</th>				
+				<th>Especie</th>
 				<th>Edad</th>
+				<th>Tipo de Pico</th>
+				<th>Vuela?</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var animal in animales)
+			@foreach (var ave in aves)
 			{
 				<tr>
-					<td>@animal.Nombre</td>
-					<td>@animal.Especie</td>
-					<td>@animal.Edad</td>
+					<td>@ave.Nombre</td>
+					<td>@ave.Especie</td>
+					<td>@ave.Edad</td>
+					<td>@ave.TipoPico</td>
+					<td>@ave.Vuela</td>
 				</tr>
 			}
 		</tbody>
 	</table>
 }
+
+
 @code {
-	private List <Animal> animales = new List<Animal>();
+	private List<Ave> aves = new List<Ave>();
 	protected override async Task OnInitializedAsync()
 	{
-		var animalGuardado = localStorage.GetItem<List<Animal>>("animales");
+		var aveGuardado = localStorage.GetItem<List<Ave>>("aves");
 
-		if (animalGuardado != null)
+		if (aveGuardado != null)
 		{
-			animales = animalGuardado;
+			aves = aveGuardado;
 		}
 	}
 }

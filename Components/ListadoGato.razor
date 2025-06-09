@@ -1,5 +1,49 @@
-﻿<h3>ListadoGato</h3>
+﻿@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@inject HttpClient Http
+
+@using Models
+
+@if (gatos == null)
+{
+	<p><em>Cargando...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Especie</th>
+				<th>Edad</th>
+				<th>Tipo de Pico</th>
+				<th>Vuela?</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var gato in gatos)
+			{
+				<tr>
+					<td>@gato.Nombre</td>
+					<td>@gato.Especie</td>
+					<td>@gato.Edad</td>
+					<td>@gato.Pelaje</td>
+					<td>@gato.EsDomestico</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
 
 @code {
+	private List<Gato> gatos = new List<Gato>();
+	protected override async Task OnInitializedAsync()
+	{
+		var gatoGuardado = localStorage.GetItem<List<Gato>>("gatos");
 
+		if (gatoGuardado != null)
+		{
+			gatos = gatoGuardado;
+		}
+	}
 }
