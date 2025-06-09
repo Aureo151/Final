@@ -1,7 +1,147 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+@using Models;
+@using Components;
 
-<h1>Hello, world!</h1>
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@inject NavigationManager NavigationManager
 
-Welcome to your new app.
+<h1>Formulario para IngresarAnimales</h1>
+
+<div class= "col col-4">
+    <label for="especie" class="form-label">Especie</label>
+    <InputSelect id="especie" class="form-select" @bind-Value="EspecieSeleccionada">
+        <option value="Perro">Perro</option>
+        <option value="Gato">Gato</option>
+        <option value="Ave">Ave</option>
+    </InputSelect>
+</div>
+@if(EspecieSeleccionada == "Perro")
+{
+    perro.Especie = "Perro";
+    <EditForm Model ="@perro" OnValidSubmit="@GuardarPerro">
+        <DataAnnotationsValidator />
+		<ValidationSummary />
+
+        <div class="container mt-4">
+                <div class="row mt-3">
+                    <div class="col col-4">
+                        <label for="nombre" class="form-label">Nombre</label>
+					<   InputText id="nombre" class="form-control" @bind-Value="perro.Nombre" />
+					    <ValidationMessage For="() => perro.Nombre" />
+                    </div>
+                    <div class="col col-4">
+                        <label for="edad" class="form-label">Edad</label>
+                    <   InputText id="edad" class="form-control" @bind-Value="perro.Edad" />
+                    <ValidationMessage For="() => perro.Edad" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col col-4">
+                        <label for="raza" class="form-label">Raza</label>
+                        <InputText id="raza" class="form-control" @bind-Value="perro.Raza" />
+                    <ValidationMessage For="() => perro.Raza" />
+                    </div>
+                    <div class="col col-4">
+                        <label for="size" class="form-label">Tamaño</label>
+                        <   InputText id="size" class="form-control" @bind-Value="perro.Size" />
+                        <ValidationMessage For="() => perro.Size" />
+                    </div>
+                </div>
+        </div>
+    </EditForm>
+}
+
+@code {
+    private string EspecieSeleccionada = "Perro";
+    [Parameter]
+    public string id { get; set; }
+
+    private Animal animal = new Animal();
+    private List<Animal> animales = new List<Animal>();
+
+    private Perro perro = new Perro();
+    private List<Perro> perros = new List<Perro>();
+
+    private Gato gato = new Gato();
+    private List<Gato> gatos = new List<Gato>();
+
+    private Ave ave = new Ave();
+    private List<Ave> aves = new List<Ave>();
+
+    private Animal ConvertirAnimalBase(Animal animalEspecifico)
+    {
+        return new Animal
+            {
+                Nombre = animalEspecifico.Nombre,
+                Especie = animalEspecifico.Especie,
+                Edad = animalEspecifico.Edad,
+            };
+    }
+
+
+    private void GuardarPerro()
+    {
+        perros.Add(perro);
+
+        var animalBase = ConvertirAnimalBase(perro);
+        animales.Add(animalBase);
+       
+        localStorage.SetItem("perros", perros);
+        localStorage.SetItem("animales", animales);
+
+        NavigationManager.NavigateTo("/listado-perro");
+    }
+
+    private void GuardarGato()
+    {
+        gatos.Add(gato);
+
+        var animalBase = ConvertirAnimalBase(gato);
+        animales.Add(animalBase);
+    
+        localStorage.SetItem("gatos", gatos);
+        localStorage.SetItem("animales", animales);
+
+        NavigationManager.NavigateTo("/listado-gato");
+    }
+
+    private void GuardarAve()
+    {
+        aves.Add(ave);
+
+        var animalBase = ConvertirAnimalBase(ave);
+        animales.Add(animalBase);
+
+        localStorage.SetItem("aves", aves);
+        localStorage.SetItem("animales", animales);
+
+        NavigationManager.NavigateTo("/listado-ave");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Recuperar la lista de starships desde LocalStorage a una variable var
+        var animalesGuardados = localStorage.GetItem<List<Animal>>("animales");
+
+        // Validar si la lista fue recuperada correctamente, copiarla a la lista
+        if (animalesGuardados != null)
+        {
+            animales = animalesGuardados;
+            if (id != null)
+            {
+                // Buscar el alimento por ID
+                animal = animales.FirstOrDefault(a => a.Nombre == nombre);
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        aves = localStorage.GetItem<List<Ave>>("aves") ?? new();
+        gatos = localStorage.GetItem<List<Gato>>("gatos") ?? new();
+        perros = localStorage.GetItem<List<Perro>>("perros") ?? new();
+        animales = localStorage.GetItem<List<Animal>>("animales") ?? new();
+
+    }
+}
