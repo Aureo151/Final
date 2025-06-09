@@ -51,11 +51,80 @@
         </div>
     </EditForm>
 }
+@if (EspecieSeleccionada == "Gato")
+{
+    gato.Especie = "Gato";
+    <EditForm Model="@gato" OnValidSubmit="@GuardarGato">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
+        <div class="container mt-4">
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <   InputText id="nombre" class="form-control" @bind-Value="gato.Nombre" />
+                    <ValidationMessage For="() => gato.Nombre" />
+                </div>
+                <div class="col col-4">
+                    <label for="edad" class="form-label">Edad</label>
+                    <   InputText id="edad" class="form-control" @bind-Value="gato.Edad" />
+                    <ValidationMessage For="() => gato.Edad" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="pelaje" class="form-label">Tipo de Pelaje</label>
+                    <InputText id="pelaje" class="form-control" @bind-Value="gato.Pelaje" />
+                    <ValidationMessage For="() => gato.Pelaje" />
+                </div>
+                <div class="col col-4">
+                    <label for="esdomestico" class="form-label">Es Domestico?</label>
+                    <   InputText id="esdomestico" class="form-control" @bind-Value="gato.EsDomestico" />
+                    <ValidationMessage For="() => gato.EsDomestico" />
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+@if (EspecieSeleccionada == "ave")
+{
+    ave.Especie = "Ave";
+    <EditForm Model="@ave" OnValidSubmit="@GuardarAve">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="container mt-4">
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <   InputText id="nombre" class="form-control" @bind-Value="ave.Nombre" />
+                    <ValidationMessage For="() => ave.Nombre" />
+                </div>
+                <div class="col col-4">
+                    <label for="edad" class="form-label">Edad</label>
+                    <   InputText id="edad" class="form-control" @bind-Value="ave.Edad" />
+                    <ValidationMessage For="() => ave.Edad" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="tipopico" class="form-label">Tipo de Pico</label>
+                    <InputText id="tipopico" class="form-control" @bind-Value="ave.TipoPico" />
+                    <ValidationMessage For="() => ave.TipoPico" />
+                </div>
+                <div class="col col-4">
+                    <label for="vuela" class="form-label">Vuela?</label>
+                    <   InputText id="vuela" class="form-control" @bind-Value="ave.Vuela" />
+                    <ValidationMessage For="() => ave.Vuela" />
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
 @code {
     private string EspecieSeleccionada = "Perro";
     [Parameter]
-    public string id { get; set; }
+    public string nombre { get; set; }
 
     private Animal animal = new Animal();
     private List<Animal> animales = new List<Animal>();
@@ -128,7 +197,7 @@
         if (animalesGuardados != null)
         {
             animales = animalesGuardados;
-            if (id != null)
+            if (nombre != null)
             {
                 // Buscar el alimento por ID
                 animal = animales.FirstOrDefault(a => a.Nombre == nombre);
