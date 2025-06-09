@@ -1,5 +1,60 @@
-﻿<h3>BorrarAnimal</h3>
+﻿@page "/animal-borrar/{id}"
+
+@using Models;
+@using Components;
+
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@inject NavigationManager NavigationManager
+
+<h3>Eliminando...</h3>
 
 @code {
+    [Parameter]
+    public string Nombre { get; set; }
+    protected override void OnInitialized()
+    {
+        var animales = localStorage.GetItem<List<Animal>>("animales");
+        var perros = localStorage.GetItem<List<Perro>>("perros");
+        var gatos = localStorage.GetItem<List<Gato>>("gatos");
+        var aves = localStorage.GetItem<List<Ave>>("aves");
+
+        if (animales != null)
+        {
+            var animal = animales.FirstOrDefault(a => a.Nombre == Nombre);
+            if (animal != null)
+            {
+                animales.Remove(animal);
+                localStorage.SetItem("animales", animales);
+            }
+        }
+        if (perros != null)
+        {
+            var perro = perros.FirstOrDefault(a => a.Nombre == Nombre);
+            if (perro != null)
+            {
+                perros.Remove(perro);
+                localStorage.SetItem("perros", perros);
+            }
+        }
+        if (gatos != null)
+        {
+            var gato = gatos.FirstOrDefault(a => a.Nombre == Nombre);
+            if (gato != null)
+            {
+                gatos.Remove(gato);
+                localStorage.SetItem("gatos", gatos);
+            }
+        }
+        if (aves != null)
+        {
+            var ave = aves.FirstOrDefault(a => a.Nombre == Nombre);
+            if (ave != null)
+            {
+                aves.Remove(ave);
+                localStorage.SetItem("aves", aves);
+            }
+        }
+        NavigationManager.NavigateTo("/listado-animal");
+    }
 
 }

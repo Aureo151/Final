@@ -1,5 +1,6 @@
 ﻿@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 @using Models
 
@@ -28,6 +29,19 @@ else
 					<td>@perro.Edad</td>
 					<td>@perro.Raza</td>
 					<td>@perro.Size</td>
+					<td>
+						<button class="btn btn-warning"
+								@onclick="@(() => NavigationManager.NavigateTo($"animal-editar/{perro.Nombre}"))">
+							Editar
+						</button>
+
+					</td>
+					<td>
+						<button class="btn btn-danger"
+								@onclick="@(() => NavigationManager.NavigateTo($"animal-borrar/{perro.Nombre}"))">
+							Borrar
+						</button>
+					</td>
 				</tr>
 			}
 		</tbody>

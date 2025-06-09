@@ -27,12 +27,12 @@
                 <div class="row mt-3">
                     <div class="col col-4">
                         <label for="nombre" class="form-label">Nombre</label>
-					<   InputText id="nombre" class="form-control" @bind-Value="perro.Nombre" />
+					<InputText id="nombre" class="form-control" @bind-Value="perro.Nombre" />
 					    <ValidationMessage For="() => perro.Nombre" />
                     </div>
                     <div class="col col-4">
                         <label for="edad" class="form-label">Edad</label>
-                    <   InputText id="edad" class="form-control" @bind-Value="perro.Edad" />
+                    <InputNumber id="edad" class="form-control" @bind-Value="perro.Edad" />
                     <ValidationMessage For="() => perro.Edad" />
                     </div>
                 </div>
@@ -44,10 +44,15 @@
                     </div>
                     <div class="col col-4">
                         <label for="size" class="form-label">Tamaño</label>
-                        <   InputText id="size" class="form-control" @bind-Value="perro.Size" />
+                        <InputText id="size" class="form-control" @bind-Value="perro.Size" />
                         <ValidationMessage For="() => perro.Size" />
                     </div>
                 </div>
+            <div class="row mt-3 text-center">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
+                </div>
+            </div>
         </div>
     </EditForm>
 }
@@ -62,12 +67,12 @@
             <div class="row mt-3">
                 <div class="col col-4">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <   InputText id="nombre" class="form-control" @bind-Value="gato.Nombre" />
+                    <InputText id="nombre" class="form-control" @bind-Value="gato.Nombre" />
                     <ValidationMessage For="() => gato.Nombre" />
                 </div>
                 <div class="col col-4">
                     <label for="edad" class="form-label">Edad</label>
-                    <   InputText id="edad" class="form-control" @bind-Value="gato.Edad" />
+                    <InputNumber id="edad" class="form-control" @bind-Value="gato.Edad" />
                     <ValidationMessage For="() => gato.Edad" />
                 </div>
             </div>
@@ -79,14 +84,19 @@
                 </div>
                 <div class="col col-4">
                     <label for="esdomestico" class="form-label">Es Domestico?</label>
-                    <   InputText id="esdomestico" class="form-control" @bind-Value="gato.EsDomestico" />
+                    <InputText id="esdomestico" class="form-control" @bind-Value="gato.EsDomestico" />
                     <ValidationMessage For="() => gato.EsDomestico" />
+                </div>
+            </div>
+            <div class="row mt-3 text-center">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
                 </div>
             </div>
         </div>
     </EditForm>
 }
-@if (EspecieSeleccionada == "ave")
+@if (EspecieSeleccionada == "Ave")
 {
     ave.Especie = "Ave";
     <EditForm Model="@ave" OnValidSubmit="@GuardarAve">
@@ -97,12 +107,12 @@
             <div class="row mt-3">
                 <div class="col col-4">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <   InputText id="nombre" class="form-control" @bind-Value="ave.Nombre" />
+                    <InputText id="nombre" class="form-control" @bind-Value="ave.Nombre" />
                     <ValidationMessage For="() => ave.Nombre" />
                 </div>
                 <div class="col col-4">
                     <label for="edad" class="form-label">Edad</label>
-                    <   InputText id="edad" class="form-control" @bind-Value="ave.Edad" />
+                    <InputNumber id="edad" class="form-control" @bind-Value="ave.Edad" />
                     <ValidationMessage For="() => ave.Edad" />
                 </div>
             </div>
@@ -114,8 +124,13 @@
                 </div>
                 <div class="col col-4">
                     <label for="vuela" class="form-label">Vuela?</label>
-                    <   InputText id="vuela" class="form-control" @bind-Value="ave.Vuela" />
+                    <InputText id="vuela" class="form-control" @bind-Value="ave.Vuela" />
                     <ValidationMessage For="() => ave.Vuela" />
+                </div>
+            </div>
+            <div class="row mt-3 text-center">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
                 </div>
             </div>
         </div>
@@ -159,7 +174,7 @@
         localStorage.SetItem("perros", perros);
         localStorage.SetItem("animales", animales);
 
-        NavigationManager.NavigateTo("/listado-perro");
+        NavigationManager.NavigateTo("/listado-perros");
     }
 
     private void GuardarGato()
@@ -172,7 +187,7 @@
         localStorage.SetItem("gatos", gatos);
         localStorage.SetItem("animales", animales);
 
-        NavigationManager.NavigateTo("/listado-gato");
+        NavigationManager.NavigateTo("/listado-gatos");
     }
 
     private void GuardarAve()
@@ -185,7 +200,7 @@
         localStorage.SetItem("aves", aves);
         localStorage.SetItem("animales", animales);
 
-        NavigationManager.NavigateTo("/listado-ave");
+        NavigationManager.NavigateTo("/listado-aves");
     }
 
     protected override async Task OnInitializedAsync()

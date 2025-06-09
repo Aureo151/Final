@@ -1,5 +1,231 @@
-﻿<h3>EditarAnimal</h3>
+﻿@page "/animal-editar/{nombre}"
 
+@using Models;
+@using Components;
+
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+@inject NavigationManager NavigationManager
+
+<h1>Formulario para IngresarAnimales</h1>
+
+<div class="col col-4">
+    <label for="especie" class="form-label">Especie</label>
+    <InputSelect id="especie" class="form-select" @bind-Value="EspecieSeleccionada">
+        <option value="Perro">Perro</option>
+        <option value="Gato">Gato</option>
+        <option value="Ave">Ave</option>
+    </InputSelect>
+</div>
+@if (EspecieSeleccionada == "Perro")
+{
+    perro.Especie = "Perro";
+    <EditForm Model="@perro" OnValidSubmit="@GuardarPerro">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="container mt-4">
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <InputText id="nombre" class="form-control" @bind-Value="perro.Nombre" />
+                    <ValidationMessage For="() => perro.Nombre" />
+                </div>
+                <div class="col col-4">
+                    <label for="edad" class="form-label">Edad</label>
+                    <InputNumber id="edad" class="form-control" @bind-Value="perro.Edad" />
+                    <ValidationMessage For="() => perro.Edad" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="raza" class="form-label">Raza</label>
+                    <InputText id="raza" class="form-control" @bind-Value="perro.Raza" />
+                    <ValidationMessage For="() => perro.Raza" />
+                </div>
+                <div class="col col-4">
+                    <label for="size" class="form-label">Tamaño</label>
+                    <InputText id="size" class="form-control" @bind-Value="perro.Size" />
+                    <ValidationMessage For="() => perro.Size" />
+                </div>
+            </div>
+            <div class="row mt-3 text-center">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+@if (EspecieSeleccionada == "Gato")
+{
+    gato.Especie = "Gato";
+    <EditForm Model="@gato" OnValidSubmit="@GuardarGato">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="container mt-4">
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <InputText id="nombre" class="form-control" @bind-Value="gato.Nombre" />
+                    <ValidationMessage For="() => gato.Nombre" />
+                </div>
+                <div class="col col-4">
+                    <label for="edad" class="form-label">Edad</label>
+                    <InputNumber id="edad" class="form-control" @bind-Value="gato.Edad" />
+                    <ValidationMessage For="() => gato.Edad" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="pelaje" class="form-label">Tipo de Pelaje</label>
+                    <InputText id="pelaje" class="form-control" @bind-Value="gato.Pelaje" />
+                    <ValidationMessage For="() => gato.Pelaje" />
+                </div>
+                <div class="col col-4">
+                    <label for="esdomestico" class="form-label">Es Domestico?</label>
+                    <InputText id="esdomestico" class="form-control" @bind-Value="gato.EsDomestico" />
+                    <ValidationMessage For="() => gato.EsDomestico" />
+                </div>
+            </div>
+            <div class="row mt-3 text-center">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+@if (EspecieSeleccionada == "ave")
+{
+    ave.Especie = "Ave";
+    <EditForm Model="@ave" OnValidSubmit="@GuardarAve">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="container mt-4">
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <InputText id="nombre" class="form-control" @bind-Value="ave.Nombre" />
+                    <ValidationMessage For="() => ave.Nombre" />
+                </div>
+                <div class="col col-4">
+                    <label for="edad" class="form-label">Edad</label>
+                    <InputNumber id="edad" class="form-control" @bind-Value="ave.Edad" />
+                    <ValidationMessage For="() => ave.Edad" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col col-4">
+                    <label for="tipopico" class="form-label">Tipo de Pico</label>
+                    <InputText id="tipopico" class="form-control" @bind-Value="ave.TipoPico" />
+                    <ValidationMessage For="() => ave.TipoPico" />
+                </div>
+                <div class="col col-4">
+                    <label for="vuela" class="form-label">Vuela?</label>
+                    <InputText id="vuela" class="form-control" @bind-Value="ave.Vuela" />
+                    <ValidationMessage For="() => ave.Vuela" />
+                </div>
+            </div>
+            <div class="row mt-3 text-center">
+                <div class="col">
+                    <button class="btn btn-secondary" type="submit">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
 @code {
+    private string EspecieSeleccionada = "Perro";
+    [Parameter]
+    public string nombre { get; set; }
 
+    private Animal animal = new Animal();
+    private List<Animal> animales = new List<Animal>();
+
+    private Perro perro = new Perro();
+    private List<Perro> perros = new List<Perro>();
+
+    private Gato gato = new Gato();
+    private List<Gato> gatos = new List<Gato>();
+
+    private Ave ave = new Ave();
+    private List<Ave> aves = new List<Ave>();
+
+    private Animal ConvertirAnimalBase(Animal animalEspecifico)
+    {
+        return new Animal
+        {
+            Nombre = animalEspecifico.Nombre,
+            Especie = animalEspecifico.Especie,
+            Edad = animalEspecifico.Edad,
+        };
+    }
+
+
+    private void GuardarPerro()
+    {
+        perros.Add(perro);
+
+        var animalBase = ConvertirAnimalBase(perro);
+        animales.Add(animalBase);
+
+        localStorage.SetItem("perros", perros);
+        localStorage.SetItem("animales", animales);
+
+        NavigationManager.NavigateTo("/listado-perro");
+    }
+
+    private void GuardarGato()
+    {
+        gatos.Add(gato);
+
+        var animalBase = ConvertirAnimalBase(gato);
+        animales.Add(animalBase);
+
+        localStorage.SetItem("gatos", gatos);
+        localStorage.SetItem("animales", animales);
+
+        NavigationManager.NavigateTo("/listado-gato");
+    }
+
+    private void GuardarAve()
+    {
+        aves.Add(ave);
+
+        var animalBase = ConvertirAnimalBase(ave);
+        animales.Add(animalBase);
+
+        localStorage.SetItem("aves", aves);
+        localStorage.SetItem("animales", animales);
+
+        NavigationManager.NavigateTo("/listado-ave");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Recuperar la lista de starships desde LocalStorage a una variable var
+        var animalesGuardados = localStorage.GetItem<List<Animal>>("animales");
+
+        // Validar si la lista fue recuperada correctamente, copiarla a la lista
+        if (animalesGuardados != null)
+        {
+            animales = animalesGuardados;
+            if (nombre != null)
+            {
+                // Buscar el alimento por ID
+                animal = animales.FirstOrDefault(a => a.Nombre == nombre);
+            }
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        aves = localStorage.GetItem<List<Ave>>("aves") ?? new();
+        gatos = localStorage.GetItem<List<Gato>>("gatos") ?? new();
+        perros = localStorage.GetItem<List<Perro>>("perros") ?? new();
+        animales = localStorage.GetItem<List<Animal>>("animales") ?? new();
+
+    }
 }
